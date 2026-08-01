@@ -1,0 +1,30 @@
+generated: '2026-07-31'
+method: probed
+source: well-known/harry-s-harrys-ucp.json + MCP initialize handshake
+note: >-
+  Mammoth Brands runs no developer programme, so there is no versioning policy page, no
+  deprecation policy, no SLA and no status page. What exists is the version negotiation the
+  two protocol surfaces publish about themselves. Absence is recorded, not filled in.
+versioning:
+  scheme: date-based (UCP) + protocol-version negotiation (MCP)
+  current: '2026-04-08'
+  supported:
+  - version: '2026-04-08'
+    profile: https://com-harrys-us.myshopify.com/.well-known/ucp/2026-04-08
+  - version: '2026-01-23'
+    profile: https://com-harrys-us.myshopify.com/.well-known/ucp/2026-01-23
+  mcp_protocol_version: '2025-06-18'
+  docs: https://www.harrys.com/.well-known/ucp.json
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: no deprecation or sunset policy published; the UCP profile simply lists the versions still served
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+status_page_note: no status.harrys.com, status.mammothbrands.com or equivalent resolves
+support:
+  press: press@mammothbrands.com
+  brand_contact: https://www.shopflamingo.com/pages/contact
+deprecated_operations: []

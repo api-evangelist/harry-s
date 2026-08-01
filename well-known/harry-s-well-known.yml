@@ -1,0 +1,127 @@
+generated: '2026-07-31'
+method: probed
+source: live HTTP probe of every Mammoth Brands consumer + corporate host
+note: >-
+  Mammoth Brands publishes no developer portal and no /.well-known/security.txt on any host.
+  The real machine-readable discovery surface sits on the two brands running on Shopify
+  (Harry's and Flamingo): OAuth 2.0 / OpenID Connect discovery for the Shopify Customer
+  Account API, and a Universal Commerce Protocol (UCP) merchant profile. Lume, Mando and
+  Coterie run non-Shopify stacks and return no /.well-known documents.
+hosts:
+- host: https://harrys.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    file: harry-s-harrys-openid-configuration.json
+    note: Shopify Customer Account API OIDC discovery; issuer https://shopify.com/authentication/88395284786
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: harry-s-harrys-openid-configuration.json
+    note: RFC 8414 metadata; byte-identical to the openid-configuration document
+  - path: /.well-known/security.txt
+    status: 301
+  - path: /.well-known/api-catalog
+    status: 301
+  - path: /.well-known/agent-card.json
+    status: 301
+  - path: /.well-known/agent.json
+    status: 301
+- host: https://www.harrys.com
+  documents:
+  - path: /.well-known/ucp.json
+    status: 200
+    content_type: application/json
+    file: harry-s-harrys-ucp.json
+    note: Universal Commerce Protocol merchant profile, version 2026-04-08
+  - path: /.well-known/ucp
+    status: 200
+    content_type: application/json
+    file: harry-s-harrys-ucp.json
+    note: unsuffixed alias, byte-identical
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://www.shopflamingo.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    file: harry-s-flamingo-openid-configuration.json
+    note: Shopify Customer Account API OIDC discovery; issuer https://shopify.com/authentication/55874814054
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: harry-s-flamingo-openid-configuration.json
+  - path: /.well-known/ucp.json
+    status: 200
+    content_type: application/json
+    file: harry-s-flamingo-ucp.json
+    note: Universal Commerce Protocol merchant profile, version 2026-04-08
+  - path: /.well-known/apple-app-site-association
+    status: 200
+    content_type: application/json
+    note: not harvested; app-association only
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://www.mammothbrands.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://www.lumedeodorant.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 302
+  - path: /.well-known/openid-configuration
+    status: 302
+  - path: /.well-known/agent-card.json
+    status: 302
+- host: https://shopmando.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: https://www.coterie.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+security_txt: none published on any Mammoth Brands host
+x-evidence:
+  fetched: '2026-07-31'
+  hosts_probed: 12
+  documents_found: 6

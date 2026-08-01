@@ -1,0 +1,124 @@
+generated: '2026-07-31'
+method: searched
+status: published
+source: live anonymous MCP tools/list against each brand storefront
+note: >-
+  Mammoth Brands ships no developer-facing API programme, but two of its brands (Harry's
+  and Flamingo) run on Shopify and therefore expose a live, anonymous, unauthenticated
+  Model Context Protocol server at /api/mcp on their own domains. tools/list was fetched
+  successfully on 2026-07-31 and the verbatim responses are saved alongside this manifest,
+  so every tool below carries the provider's REAL inputSchema. A second, UCP-branded MCP
+  endpoint is advertised in each store's /.well-known/ucp.json but requires an agent
+  profile URI and is therefore gated.
+servers:
+- name: harrys-storefront
+  brand: Harry's
+  transport: http
+  protocol: MCP
+  url: https://www.harrys.com/api/mcp
+  alias_url: https://harrys.com/api/mcp
+  authentication: none (anonymous)
+  protocol_version: '2025-06-18'
+  server_info:
+    name: storefront-renderer
+    version: 0.1.0
+  capabilities:
+    tools: {listChanged: true}
+    prompts: {listChanged: true}
+    resources: {listChanged: true}
+    logging: {}
+  tools_list_file: harry-s-harrys-tools-list.json
+  x-evidence:
+    fetched: '2026-07-31'
+    url: https://www.harrys.com/api/mcp
+    method: 'POST tools/list'
+    http_status: 200
+    content_type: application/json
+- name: flamingo-storefront
+  brand: Flamingo
+  transport: http
+  protocol: MCP
+  url: https://www.shopflamingo.com/api/mcp
+  authentication: none (anonymous)
+  protocol_version: '2025-06-18'
+  tools_list_file: harry-s-flamingo-tools-list.json
+  x-evidence:
+    fetched: '2026-07-31'
+    url: https://www.shopflamingo.com/api/mcp
+    method: 'POST tools/list'
+    http_status: 200
+    content_type: application/json
+- name: harrys-ucp
+  brand: Harry's
+  transport: http
+  protocol: MCP (UCP dev.ucp.shopping service)
+  url: https://com-harrys-us.myshopify.com/api/ucp/mcp
+  authentication: agent profile URI required
+  status: gated
+  x-evidence:
+    fetched: '2026-07-31'
+    url: https://com-harrys-us.myshopify.com/api/ucp/mcp
+    http_status: 422
+    error: '-32001 UCP discovery failed / invalid_profile_url — Unable to fetch agent profile: Missing profile uri'
+- name: flamingo-ucp
+  brand: Flamingo
+  transport: http
+  protocol: MCP (UCP dev.ucp.shopping service)
+  url: https://shop-flamingo-us.myshopify.com/api/ucp/mcp
+  authentication: agent profile URI required
+  status: gated
+  source: well-known/harry-s-flamingo-ucp.json
+tools:
+- name: search_catalog
+  description: >-
+    Search for products from the online store. Accepts natural-language queries, specific
+    filter criteria, or both; at least one of query or filters must be provided. Results are
+    paginated via pagination.cursor. Response conforms to the UCP catalog search capability
+    (dev.ucp.shopping.catalog.search).
+  input_properties: [meta, catalog]
+  servers: [harrys-storefront, flamingo-storefront]
+- name: get_product_details
+  description: >-
+    Look up a product by ID. Pass the options parameter to select a specific variant for the
+    product card; without options the first available variant is returned.
+  input_properties: [product_id, options, country, language]
+  required: [product_id]
+  servers: [harrys-storefront, flamingo-storefront]
+- name: get_cart
+  description: >-
+    Get the cart including items, shipping options, discount info, and checkout url for a
+    given cart id.
+  input_properties: [cart_id]
+  required: [cart_id]
+  servers: [harrys-storefront, flamingo-storefront]
+- name: update_cart
+  description: >-
+    Perform updates to a cart in one consolidated call — adding/removing/updating line items,
+    buyer information, shipping details, discount codes, gift cards and notes. Shipping
+    options become available after adding a delivery address.
+  input_properties: [cart_id, add_items, update_items, remove_line_ids, buyer_identity,
+    delivery_addresses_to_add, delivery_addresses_to_replace, selected_delivery_options,
+    discount_codes, gift_card_codes, note]
+  servers: [harrys-storefront, flamingo-storefront]
+- name: search_shop_policies_and_faqs
+  description: >-
+    Get facts about the store's policies, products, or services — return policy, shipping
+    policy, contact details, hours.
+  input_properties: [query, context]
+  required: [query]
+  servers: [harrys-storefront, flamingo-storefront]
+coverage:
+  servers_published: 2
+  servers_gated: 2
+  tools: 5
+  tools_with_real_input_schema: 5
+brands_without_mcp:
+- brand: Lume
+  host: https://www.lumedeodorant.com
+  note: non-Shopify stack; /api/mcp returns the site shell
+- brand: Mando
+  host: https://shopmando.com
+  note: non-Shopify stack; /api/mcp returns 404
+- brand: Coterie
+  host: https://www.coterie.com
+  note: Next.js storefront; POST /api/mcp returns 404 "Cannot POST /api/mcp"

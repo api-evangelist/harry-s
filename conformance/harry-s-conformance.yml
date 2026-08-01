@@ -1,0 +1,66 @@
+generated: '2026-07-31'
+method: probed
+source: well-known/harry-s-harrys-ucp.json + well-known/harry-s-harrys-openid-configuration.json + mcp/harry-s-harrys-tools-list.json
+note: >-
+  Every "conforms: true" below is backed by a document fetched from a Mammoth Brands host on
+  2026-07-31. Standards the company does not implement are recorded as false rather than
+  omitted. Mammoth Brands publishes no certification or compliance programme page of its own
+  (no trust centre, no SOC 2 / ISO 27001 / PCI attestation page was found on any host), so no
+  Compliance pointer is claimed.
+standards:
+- id: oauth2
+  conforms: true
+  evidence: RFC 8414 authorization-server metadata served at harrys.com and www.shopflamingo.com/.well-known/oauth-authorization-server; authorization_code grant with S256 PKCE
+- id: oidc
+  conforms: true
+  evidence: OpenID Connect discovery document at /.well-known/openid-configuration; RS256 id_token signing, standard claims set
+- id: rfc8414-authorization-server-metadata
+  conforms: true
+  evidence: /.well-known/oauth-authorization-server returns 200 and is byte-identical to the openid-configuration document
+- id: rfc8615-well-known-uris
+  conforms: true
+  evidence: discovery documents served under /.well-known/ on the registrable domain
+- id: mcp
+  conforms: true
+  version: '2025-06-18'
+  evidence: initialize handshake against https://www.harrys.com/api/mcp returned protocolVersion 2025-06-18, serverInfo storefront-renderer 0.1.0, tools/prompts/resources/logging capabilities
+- id: jsonrpc-2.0
+  conforms: true
+  evidence: MCP transport; observed jsonrpc "2.0" envelopes on both success and error responses
+- id: ucp-universal-commerce-protocol
+  conforms: true
+  version: '2026-04-08'
+  supported_versions: ['2026-04-08', '2026-01-23']
+  evidence: /.well-known/ucp.json merchant profile declaring dev.ucp.shopping service (mcp + embedded transports) and the checkout, fulfillment, discount, cart, order, catalog.search and catalog.lookup capabilities
+- id: llmstxt
+  conforms: partial
+  evidence: https://www.shopflamingo.com/llms.txt returns text/markdown 200; Harry's, Lume, Mando and Coterie serve no llms.txt
+- id: agents-md
+  conforms: partial
+  evidence: https://www.shopflamingo.com/agents.md returns text/markdown 200; no equivalent on the other four brands
+- id: a2a-agent-card
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json 404 or redirect on all twelve hosts probed
+- id: openapi
+  conforms: false
+  evidence: no OpenAPI/Swagger document found at any /openapi.json, /openapi.yaml, /swagger.json, /api-docs or /docs path on any host
+- id: asyncapi
+  conforms: false
+  evidence: no event, streaming or webhook surface published to third parties
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors are JSON-RPC 2.0 error objects, not application/problem+json
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt 404 or redirect on all hosts probed
+- id: graphql
+  conforms: false
+  evidence: no public /graphql surface; the Shopify Storefront/Customer Account GraphQL APIs are platform surfaces requiring a merchant-issued token and are not published by Mammoth Brands
+payment_handlers_declared:
+- id: com.google.pay
+  version: '2026-01-11'
+  evidence: well-known/harry-s-harrys-ucp.json payment_handlers; merchant_origin checkout-us.harrys.com
+- id: dev.shopify.card
+  version: '2026-01-15'
+- id: dev.shopify.shop_pay
+  version: '2026-04-08'

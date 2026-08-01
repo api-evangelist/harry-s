@@ -1,0 +1,25 @@
+generated: '2026-07-31'
+method: searched
+note: >-
+  Flamingo publishes its own agents.md (mirrored at /llms.txt), which is saved verbatim here.
+  The second skill is generated from the live MCP tool list and the provider's own agent rules
+  — every tool name in it was returned by a real tools/list call, none was invented.
+skills:
+- file: harry-s-flamingo-agents.md
+  name: Flamingo agent instructions (provider-published)
+  method: searched
+  source: https://www.shopflamingo.com/agents.md
+  fetched: '2026-07-31'
+  http_status: 200
+  content_type: text/markdown
+  api: mcp/harry-s-mcp.yml
+  operations: [search_catalog, create_cart, create_checkout, update_checkout, complete_checkout]
+  note: >-
+    The provider's own document. Note that the checkout tools it names are served by the
+    agent-profile-gated UCP endpoint, not by the anonymous /api/mcp server.
+- file: harry-s-shop-a-storefront.md
+  name: Shop a Mammoth Brands storefront over MCP
+  method: generated
+  source: mcp/harry-s-harrys-tools-list.json
+  api: mcp/harry-s-mcp.yml
+  operations: [search_catalog, get_product_details, get_cart, update_cart, search_shop_policies_and_faqs]

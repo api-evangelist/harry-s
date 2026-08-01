@@ -1,0 +1,103 @@
+generated: '2026-07-31'
+method: derived
+source: mcp/harry-s-mcp.yml + llms/harry-s-flamingo-llms.txt + well-known/harry-s-harrys-ucp.json
+note: >-
+  Mammoth Brands publishes NO OpenAPI, so the usual MCP-tool -> operationId binding is not
+  available. What the brands DO publish is (a) a live anonymous MCP tool set with real input
+  schemas, (b) an explicit list of read-only HTTP/JSON storefront endpoints in their own
+  agents.md / llms.txt, and (c) a UCP merchant profile naming the capability each surface
+  implements. This crosswalk binds those three together. `rest` rows are documented HTTP
+  paths, not OpenAPI operationIds — no spec exists to reference and none was invented.
+surfaces:
+  openapi: null
+  openapi_note: no OpenAPI, Swagger, GraphQL or AsyncAPI definition published on any host
+  mcp:
+  - url: https://www.harrys.com/api/mcp
+    gated: false
+  - url: https://www.shopflamingo.com/api/mcp
+    gated: false
+  - url: https://com-harrys-us.myshopify.com/api/ucp/mcp
+    gated: true
+    reason: agent profile URI required (HTTP 422 invalid_profile_url)
+  - url: https://shop-flamingo-us.myshopify.com/api/ucp/mcp
+    gated: true
+  http_json:
+    documented_at: https://www.shopflamingo.com/agents.md
+    host: https://www.shopflamingo.com
+  graphql: null
+  ucp_profile: https://www.harrys.com/.well-known/ucp.json
+crosswalk:
+- tool: search_catalog
+  category: catalog
+  rest: ['GET /search?q={query}&type=product', 'GET /collections/{handle}/products.json',
+    'GET /collections/all']
+  binding: http-json
+  ucp_capability: dev.ucp.shopping.catalog.search
+  confidence: medium
+  note: >-
+    The MCP tool and the documented JSON endpoints are overlapping projections of the same
+    catalog; the tool adds natural-language query, filters and cursor pagination the JSON
+    endpoints do not expose. Binding is by capability, not by a published operationId.
+- tool: get_product_details
+  category: catalog
+  rest: ['GET /products/{handle}.json']
+  binding: http-json
+  ucp_capability: dev.ucp.shopping.catalog.lookup
+  confidence: medium
+  note: >-
+    The tool keys on product_id and supports options/country/language variant selection; the
+    documented JSON endpoint keys on the storefront handle. Same entity, different key.
+- tool: get_cart
+  category: cart
+  rest: []
+  binding: mcp-only
+  ucp_capability: dev.ucp.shopping.cart
+  confidence: high
+- tool: update_cart
+  category: cart
+  rest: []
+  binding: mcp-only
+  ucp_capability: dev.ucp.shopping.cart
+  confidence: high
+- tool: search_shop_policies_and_faqs
+  category: content
+  rest: ['GET /policies/privacy-policy', 'GET /policies/terms-of-service', 'GET /policies/refund-policy',
+    'GET /policies/shipping-policy']
+  binding: http-json
+  confidence: low
+  note: >-
+    The tool answers policy questions in natural language over the same policy documents the
+    store serves as HTML at /policies/*; there is no structured endpoint equivalent.
+mcp_only:
+- tool: get_cart
+  reason: no public read endpoint for a cart; cart state is only reachable through MCP or the buyer's browser session
+- tool: update_cart
+  reason: >-
+    write path with no documented public HTTP equivalent; consolidates line items, buyer
+    identity, delivery addresses, delivery option selection, discount and gift-card codes
+rest_only:
+- capability: sitemap
+  rest: ['GET /sitemap.xml']
+  reason: no MCP tool exposes the store URL inventory
+- capability: storefront-catalog-dump
+  rest: ['GET /products.json']
+  reason: bulk product listing; MCP search_catalog is query-scoped and paginated
+ucp_capabilities_declared_without_an_anonymous_tool:
+- dev.ucp.shopping.checkout
+- dev.ucp.shopping.fulfillment
+- dev.ucp.shopping.discount
+- dev.ucp.shopping.order
+- dev.shopify.catalog
+note_on_gated_capabilities: >-
+  The store's own llms.txt documents create_cart / create_checkout / update_checkout /
+  complete_checkout as the UCP agent flow. Those tools are NOT returned by the anonymous
+  /api/mcp tools/list — they live behind the agent-profile-gated /api/ucp/mcp endpoint. They
+  are recorded here as declared-but-gated rather than mapped, because their real input
+  schemas could not be observed.
+coverage:
+  tools_named: 5
+  tools_bound_to_a_documented_http_path: 3
+  mcp_only: 2
+  rest_paths_documented: 9
+  rest_paths_with_a_tool: 5
+  openapi_operations_total: 0

@@ -1,0 +1,59 @@
+generated: '2026-07-31'
+method: probed
+source: live JSON-RPC responses from the Harry's and Flamingo MCP endpoints
+format: jsonrpc-2.0
+note: >-
+  There is no OpenAPI to derive 4xx/5xx responses from and Mammoth Brands publishes no error
+  reference. The entries below are either errors observed live on 2026-07-31 or the JSON-RPC
+  2.0 standard codes the transport necessarily uses. Nothing was invented; observed entries
+  carry their verbatim message.
+envelope:
+  shape: '{"jsonrpc": "2.0", "id": <id>, "error": {"code": <int>, "message": <string>, "data": {...}}}'
+  content_type: application/json
+  http_status_on_error: HTTP status may be 200 (JSON-RPC) or 4xx (transport); 422 observed for the UCP agent-profile failure
+problems:
+- code: -32001
+  title: UCP discovery failed
+  observed: true
+  http_status: 422
+  message: UCP discovery failed
+  data:
+    code: invalid_profile_url
+    content: 'Unable to fetch agent profile: Missing profile uri'
+    continue_url: https://com-harrys-us.myshopify.com/
+  remediation: >-
+    Supply an agent profile URI when calling the UCP MCP endpoint. The anonymous storefront
+    endpoint at /api/mcp requires no profile and should be used for read-only catalog work.
+  source_surface: https://com-harrys-us.myshopify.com/api/ucp/mcp
+- status: 429
+  title: Rate limited
+  observed: false
+  documented: true
+  description: The MCP endpoint is rate-limited per IP.
+  remediation: Back off on 429 responses.
+  source: https://www.shopflamingo.com/agents.md
+- code: -32700
+  title: Parse error
+  observed: false
+  description: JSON-RPC 2.0 standard code; invalid JSON received by the server.
+- code: -32600
+  title: Invalid Request
+  observed: false
+  description: JSON-RPC 2.0 standard code; the JSON sent is not a valid Request object.
+- code: -32601
+  title: Method not found
+  observed: false
+  description: JSON-RPC 2.0 standard code; the method does not exist or is not available.
+- code: -32602
+  title: Invalid params
+  observed: false
+  description: JSON-RPC 2.0 standard code; e.g. calling search_catalog with neither query nor filters, or get_cart without the required cart_id.
+- code: -32603
+  title: Internal error
+  observed: false
+  description: JSON-RPC 2.0 standard code.
+not_applicable:
+  decline_codes: >-
+    Mammoth Brands is a consumer-goods merchant, not a payments provider. Card declines are
+    handled by the Shopify/Shop Pay/Google Pay payment handlers declared in the UCP profile;
+    no decline-code reference is published by the company.

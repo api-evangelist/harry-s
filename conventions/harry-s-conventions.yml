@@ -1,0 +1,71 @@
+generated: '2026-07-31'
+method: searched
+source: https://www.shopflamingo.com/agents.md
+note: >-
+  Cross-cutting semantics for the only programmable surface Mammoth Brands exposes: the
+  anonymous storefront MCP servers on Harry's and Flamingo, plus the read-only JSON endpoints
+  the brands document themselves. Derived from the provider's own agents.md/llms.txt and from
+  live tool schemas — there is no OpenAPI to derive from.
+transport:
+  protocol: MCP over HTTP (JSON-RPC 2.0)
+  content_type: application/json
+  accept: application/json, text/event-stream
+  endpoints: ['https://www.harrys.com/api/mcp', 'https://www.shopflamingo.com/api/mcp']
+authentication:
+  style: none for the storefront MCP servers; OAuth 2.0 authorization-code + PKCE (S256) for the Shopify Customer Account API
+  see: authentication/harry-s-authentication.yml
+idempotency:
+  supported: false
+  note: >-
+    No idempotency key, header or parameter is documented or present in any tool inputSchema.
+    update_cart is a consolidated, cart_id-addressed mutation rather than an idempotent
+    operation. No Idempotency pointer is claimed for this provider.
+pagination:
+  style: cursor
+  request_field: pagination.cursor
+  response_field: pagination.cursor
+  note: >-
+    "Results are paginated, with initial results limited to improve experience. Use the
+    pagination.cursor from the response to fetch additional pages when users request more
+    results." — search_catalog tool description, fetched 2026-07-31.
+  applies_to: [search_catalog]
+buyer_context:
+  parameters: [context.address_country, context.currency, country, language]
+  note: agents.md instructs agents to pass address_country and currency for accurate pricing and availability
+rate_limiting:
+  documented: true
+  signal: HTTP 429
+  policy: per-IP rate limiting on the MCP endpoint; agents are instructed to back off on 429
+  quantified_limits_published: false
+  source: https://www.shopflamingo.com/agents.md
+versioning:
+  mcp_protocol_version: '2025-06-18'
+  ucp_scheme: date-based
+  ucp_current: '2026-04-08'
+  ucp_supported: ['2026-04-08', '2026-01-23']
+  negotiation: version list published at /.well-known/ucp.json; MCP version negotiated in the initialize handshake
+error_envelope:
+  format: JSON-RPC 2.0 error object
+  shape: '{jsonrpc, id, error: {code, message, data: {code, content, continue_url}}}'
+  see: errors/harry-s-problem-types.yml
+human_in_the_loop:
+  required_for: checkout / payment completion
+  rule: >-
+    "Checkout requires human approval. Agents must not complete payment without explicit buyer
+    consent." — agents.md. Where contemporaneous buyer approval is impossible, the store
+    directs agents to route the purchase through Shop Pay via the Shop skill.
+  source: https://www.shopflamingo.com/agents.md
+read_only_endpoints:
+- 'GET /collections/all'
+- 'GET /products/{handle}'
+- 'GET /products/{handle}.json'
+- 'GET /collections/{handle}'
+- 'GET /collections/{handle}/products.json'
+- 'GET /search?q={query}&type=product'
+- 'GET /sitemap.xml'
+cross_links:
+  authentication: authentication/harry-s-authentication.yml
+  scopes: scopes/harry-s-scopes.yml
+  errors: errors/harry-s-problem-types.yml
+  lifecycle: lifecycle/harry-s-lifecycle.yml
+  mcp: mcp/harry-s-mcp.yml

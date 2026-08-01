@@ -1,0 +1,69 @@
+# Mammoth Brands
+
+> Mammoth Brands (formerly Harry's Inc., renamed April 2025) is a privately held consumer
+> packaged goods company building Harry's, Flamingo, Lume, Mando and Coterie. It runs no
+> developer programme and publishes no OpenAPI. Two of its brands — Harry's and Flamingo —
+> operate on Shopify and expose a live, anonymous Model Context Protocol server plus a
+> Universal Commerce Protocol merchant profile on their own domains. That agentic-commerce
+> surface is the whole of the company's machine-readable footprint.
+
+## Agent surfaces (live, anonymous)
+
+- [Harry's storefront MCP endpoint](https://www.harrys.com/api/mcp): JSON-RPC 2.0 over HTTP, MCP protocol version 2025-06-18, no authentication. POST `tools/list` to enumerate.
+- [Flamingo storefront MCP endpoint](https://www.shopflamingo.com/api/mcp): same five-tool surface.
+- [Harry's UCP merchant profile](https://www.harrys.com/.well-known/ucp.json): Universal Commerce Protocol 2026-04-08 (also serving 2026-01-23).
+- [Flamingo UCP merchant profile](https://www.shopflamingo.com/.well-known/ucp.json): same versions.
+- [Flamingo agent instructions](https://www.shopflamingo.com/agents.md): the provider's own agents.md, mirrored at /llms.txt.
+
+## Tools
+
+- `search_catalog` — natural-language or filtered product search, cursor-paginated; conforms to `dev.ucp.shopping.catalog.search`.
+- `get_product_details` — look up a product by id, optionally selecting a variant via `options`, `country`, `language`.
+- `get_cart` — read a cart (items, shipping options, discounts, checkout url) by `cart_id`.
+- `update_cart` — one consolidated mutation for line items, buyer identity, delivery addresses, delivery option selection, discount codes, gift cards and notes.
+- `search_shop_policies_and_faqs` — natural-language questions about store policies, shipping, returns and contact details.
+
+## Rules an agent must follow
+
+- Checkout requires explicit human approval. Do not complete a payment without contemporaneous buyer consent.
+- The MCP endpoint is rate-limited per IP. Back off on HTTP 429.
+- Pass buyer context (`context.address_country`, `context.currency`) for accurate pricing and availability.
+- Follow `pagination.cursor` from a search response to page through results.
+
+## Identity and OAuth
+
+- [Harry's OIDC discovery](https://harrys.com/.well-known/openid-configuration): Shopify Customer Account API, issuer `https://shopify.com/authentication/88395284786`, authorization_code + PKCE (S256).
+- [Flamingo OIDC discovery](https://www.shopflamingo.com/.well-known/openid-configuration): issuer `https://shopify.com/authentication/55874814054`.
+- Scopes: `openid`, `email`, `customer-account-api:full`, `customer-account-mcp-api:full`.
+
+## Read-only storefront JSON
+
+- `GET /products/{handle}.json`
+- `GET /collections/{handle}/products.json`
+- `GET /collections/all`
+- `GET /search?q={query}&type=product`
+- `GET /sitemap.xml`
+
+## Brands
+
+- [Harry's](https://www.harrys.com/) — men's shaving and grooming (Shopify; MCP + UCP)
+- [Flamingo](https://www.shopflamingo.com/) — women's hair removal and body care (Shopify; MCP + UCP + llms.txt + agents.md)
+- [Lume](https://www.lumedeodorant.com/) — whole-body deodorant (no agent surface)
+- [Mando](https://shopmando.com/) — whole-body deodorant for men (no agent surface)
+- [Coterie](https://www.coterie.com/) — diapers and wipes (no agent surface)
+
+## Company
+
+- [Mammoth Brands](https://www.mammothbrands.com/)
+- [News](https://www.mammothbrands.com/news)
+- [Terms of use](https://www.mammothbrands.com/termsofuse)
+- [Privacy policy](https://www.mammothbrands.com/privacypolicy)
+- Press: press@mammothbrands.com
+
+## Not published
+
+No OpenAPI, Swagger, GraphQL, AsyncAPI, gRPC, SDK, CLI, Postman collection, status page,
+changelog, security.txt, A2A agent card, deprecation policy or developer portal exists on any
+Mammoth Brands host as of 2026-07-31.
+
+<!-- generated: 2026-07-31 | method: generated | source: apis.yml + repo artifacts (probed 2026-07-31) -->
