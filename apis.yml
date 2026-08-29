@@ -9,6 +9,17 @@ description: 'Mammoth Brands is the consumer packaged goods company formerly kno
   therefore expose a live, anonymous Model Context Protocol server plus a Universal Commerce
   Protocol merchant profile on their own domains — a real agentic-commerce surface with no
   documentation portal behind it.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://cdn.sanity.io/images/xo0k3v4q/production/c4a04b0d2919757ff10fdc3d96d577a136c6fa2d-256x256.png?w=256&h=256
 url: https://raw.githubusercontent.com/api-evangelist/harry-s/refs/heads/main/apis.yml
 x-type: company
