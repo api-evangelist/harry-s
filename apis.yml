@@ -20,6 +20,20 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  - scopes
+  - security
+  generated: '2026-09-02'
+  method: derived
 image: https://cdn.sanity.io/images/xo0k3v4q/production/c4a04b0d2919757ff10fdc3d96d577a136c6fa2d-256x256.png?w=256&h=256
 url: https://raw.githubusercontent.com/api-evangelist/harry-s/refs/heads/main/apis.yml
 x-type: company
