@@ -83,6 +83,9 @@ apis:
     url: mcp/harry-s-tool-crosswalk.yml
   - type: WellKnown
     url: well-known/harry-s-harrys-ucp.json
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-mcp
 - name: Flamingo Storefront MCP Server
   description: 'Anonymous Model Context Protocol server exposed by the Flamingo storefront at
     /api/mcp, with the same five-tool surface as Harry''s. Flamingo additionally publishes an
@@ -108,6 +111,9 @@ apis:
     url: skills/harry-s-flamingo-agents.md
   - type: WellKnown
     url: well-known/harry-s-flamingo-ucp.json
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-mcp
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
