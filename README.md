@@ -64,21 +64,101 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Mammoth Brands is the consumer packaged goods company formerly known as Harry's Inc., renamed in
-April 2025 to reflect a portfolio spanning Harry's, Flamingo, Lume, Mando and Coterie.
+Mammoth Brands is the consumer packaged goods company formerly known as Harry's Inc., renamed in April 2025 to reflect a portfolio that now spans Harry's (men's shaving and grooming), Flamingo (women's hair removal and body care), Lume and Mando (whole-body deodorant) and Coterie (modern baby care). Founded in 2013 by Jeff Raider and Andy Katz-Mayfield and still privately held, it reported $835M in 2024 revenue. It runs no developer programme and publishes no OpenAPI, but two of its brands operate on Shopify and therefore expose a live, anonymous Model Context Protocol server plus a Universal Commerce Protocol merchant profile on their own domains — a real agentic-commerce surface with no documentation portal behind it.
 
-There is no developer programme, no portal and no OpenAPI. What there is — and it is real — is an
-agentic-commerce surface on the two brands that run on Shopify:
+**Areas:** Company · Consumer Packaged Goods · Retail · E-Commerce · Personal Care · Agentic Commerce · MCP · Shopify
 
-- **Harry's** — anonymous MCP server at `https://www.harrys.com/api/mcp` (5 tools, protocol
-  `2025-06-18`) and a UCP merchant profile at `/.well-known/ucp.json` (version `2026-04-08`).
-- **Flamingo** — the same MCP surface at `https://www.shopflamingo.com/api/mcp`, plus a published
-  `llms.txt` and `agents.md`.
-- **Harry's + Flamingo** — Shopify Customer Account API OIDC / RFC 8414 discovery documents served
-  from their own apex domains.
-- **Lume, Mando, Coterie** — no agent surface.
+## Mammoth Brands on APIs.io
 
-No A2A agent card, `security.txt`, status page, changelog, SDK, CLI or Postman collection exists on
-any Mammoth Brands host as of 2026-07-31.
+Everything profiled for Mammoth Brands is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/harry-s/](https://apis.io/providers/harry-s/)** — or go straight to one of the APIs or properties below.
 
-- https://www.mammothbrands.com/
+### APIs (2)
+
+- [Harry's Storefront MCP Server](https://apis.io/apis/harry-s/harrys-storefront-mcp-server/) — Anonymous Model Context Protocol server exposed by the Harry's storefront at /api/mcp. Five tools — search_catalog, get_product_details, get_cart,…
+- [Flamingo Storefront MCP Server](https://apis.io/apis/harry-s/flamingo-storefront-mcp-server/) — Anonymous Model Context Protocol server exposed by the Flamingo storefront at /api/mcp, with the same five-tool surface as Harry's. Flamingo additionally…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [harry-s-mcp.yml](https://apis.io/servers/harry-s/harry-s-mcp-yml/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Harry S Authentication](https://apis.io/security/harry-s/harry-s-authentication/)
+- [Harry S Domain Security](https://apis.io/security/harry-s/harry-s-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Harry S Scopes](https://apis.io/scopes/harry-s/harry-s-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.mammothbrands.com/)
+- [Support](https://www.shopflamingo.com/pages/faq)
+- [Blog](https://www.mammothbrands.com/news)
+- [Terms of service](https://www.mammothbrands.com/termsofuse)
+- [Privacy policy](https://www.mammothbrands.com/privacypolicy)
+
+## API Evangelist rating
+
+**Kin Score 23.9** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 35.7 |
+| Access clarity | 21.1 |
+
+**Agent readiness 20.3** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | platform (partial credit) |
+
+**Regulatory alignment 34.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/harry-s/](https://apis.io/providers/harry-s/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Mammoth Brands: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/harry-s/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
